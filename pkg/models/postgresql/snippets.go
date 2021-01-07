@@ -2,6 +2,8 @@ package postgresql
 
 import (
 	"context"
+	"database/sql"
+	"errors"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"raissov/snippetbox/pkg/models"
 )
@@ -34,9 +36,12 @@ func (m *SnippetModel) Get(id int) (*models.Snippet, error) {
 	err := row.Scan(&sm.ID, &sm.Title, &sm.Content, &sm.Created, sm.Expires)
 
 	if err != nil {
-		return nil, models.ErrNoRecord
-	} else {
-		return nil, err
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, models.ErrNoRecord
+		} else {
+			return nil, err
+		}
+
 	}
 	return sm, nil
 
