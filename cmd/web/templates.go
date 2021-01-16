@@ -2,16 +2,16 @@ package main
 
 import (
 	"html/template"
-	"net/url"
 	"path/filepath"
-	"raissov/snippetbox/pkg/models"
 	"time"
+
+	"raissov/snippetbox/pkg/forms"
+	"raissov/snippetbox/pkg/models"
 )
 
 type templateData struct {
 	CurrentYear int
-	FormData    url.Values
-	FormErrors  map[string]string
+	Form        *forms.Form
 	Snippet     *models.Snippet
 	Snippets    []*models.Snippet
 }
