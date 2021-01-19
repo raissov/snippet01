@@ -9,7 +9,7 @@ import (
 )
 
 type SnippetModel struct {
-	//DB *sql.DB
+	//DB from *pgxpool.Pool
 	DB *pgxpool.Pool
 }
 
@@ -26,7 +26,7 @@ func (m *SnippetModel) Insert(title, content, expires string) (int, error) {
 	return id, nil
 }
 
-// This will return a specific snippet based on its id.
+// Method to  return some snippet depending on the id
 func (m *SnippetModel) Get(id int) (*models.Snippet, error) {
 	s := &models.Snippet{}
 	stmt := "SELECT id, title, content, created, expires FROM snippets WHERE expires > NOW() AND id = $1"
@@ -42,7 +42,7 @@ func (m *SnippetModel) Get(id int) (*models.Snippet, error) {
 	return s, nil
 }
 
-// This will return the 10 most recently created snippets.
+// Last 10 rows
 func (m *SnippetModel) Latest() ([]*models.Snippet, error) {
 	stmt := `SELECT id, title, content, created, expires FROM snippets
 			WHERE expires > NOW() ORDER BY created DESC LIMIT 10`
